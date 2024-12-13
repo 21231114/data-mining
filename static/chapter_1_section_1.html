@@ -14,6 +14,7 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
     <style>
         body {
             display: flex;
@@ -86,6 +87,20 @@
             </table>
 
             <p><b class="define-text">回归分析的形式化定义。 </b>给定一组数据$\mathcal{D}=\{(\boldsymbol{x}_1, y_1),(\boldsymbol{x}_2, y_2), \ldots, (\boldsymbol{x}_M, y_M)\}$，其中$\boldsymbol{x}_m$ 是解释变量，$y_m$ 是对应的被解释变量$(m = 1, \ldots, M)$。回归分析的目的是寻找一个函数来根据解释变量$\boldsymbol{x}_m$估计或预测被解释变量$y_m$，即</p>
+            <p>$$\hat{y}_m = f_{\boldsymbol{\theta}}(\boldsymbol{x}_m)$$</p>
+            <math>
+                <semantics>
+                    <mrow>
+                        <msup><mi>x</mi><mn>2</mn></msup>
+                        <mo>+</mo>
+                        <msup><mi>y</mi><mn>2</mn></msup>
+                        <mo>=</mo>
+                        <mrow><mn>10</mn></mrow>
+                    </mrow>
+                    <annotation encoding="text">Equation 1</annotation>
+                </semantics>
+            </math>
+            <p>这里，$f_{\boldsymbol{\theta}}(\cdot)$ 是用来建模解释变量和被解释变量之间关系的函数，被称为<b>回归函数</b>，$\boldsymbol{\theta}$是回归函数的参数。$\hat{y}_m$是回归函数对于${y}_m$的预测结果。在回归模型中，参数$\boldsymbol{\theta}$是一个未知量。</p>
 
         </div>
         <div class="sidebar">
