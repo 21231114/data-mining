@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>回归分析模型族</title>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             MathJax.typesetPromise();
         });
-    </script>
+    </script> -->
     <script>
         MathJax = {
             tex: {
@@ -19,8 +19,7 @@
     </script>
     <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?version=1.0"></script>
     <!-- <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script> -->
-    <!-- <script>MathJax = {tex: {inlineMath: [['$', '$'],['$$', '$$'], ['\\(', '\\)']]}}</script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script> -->
     <!-- <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script> -->
@@ -57,6 +56,9 @@
             font-weight: bold;
             color: rgb(60, 113, 183);
         }
+        .right-align {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -65,40 +67,115 @@
             <h1>第一章 回归分析模型族</h1>
             <h2 id="part1">1 回归分析模型的概述</h2>
             <h3>1.1 什么是回归？</h3>
-            <p><b class="define-text">回归分析模型的定义。 </b>在统计模型中，<b>回归分析（Regression Analysis）</b>是研究一个因变量$Y$（被解释变量）关于另一个（或多个）自变量$X$（解释变量）的依赖关系的计算方法和理论。在不同的领域中，解释变量和被解释变量会被叫做不同的名字，具体情况如<a href="#tab1">表<span style="color:rgb(171, 33, 4);">1.1</span>所示。</a></p>
+            <p><b class="define-text">回归分析模型的定义。 </b>在统计模型中，<b>回归分析（Regression Analysis）</b>是研究一个因变量$Y$（被解释变量）关于另一个（或多个）自变量$X$（解释变量）的依赖关系的计算方法和理论。在不同的领域中，解释变量和被解释变量会被叫做不同的名字，具体情况如<a href="#tab1.1">表<span style="color:rgb(171, 33, 4);">1.1</span>所示。</a></p>
             
-            <table id="tab1" style="border-collapse:collapse; width:80%; text-align: left; margin: 0 auto;">
+            <table id="tab1.1" style="border-collapse:collapse; width:80%; text-align: left; margin: 0 auto;">
                 <caption><span class="define-text">表 1.1</span>: 回归分析中的术语</caption>
                 <tr style="border-top:2px solid black; border-bottom:1px solid black;">
-                <th><math><mi>X</mi></math></th><th>$Y$</th>
-              </tr>
-              <tr>
-                <td>自变量 （Independent Variable）</td><td>因变量 （Dependent Variable）</td>
-              </tr>
-              <tr>
-                <td>解释变量 （Explanatory Variable）</td><td>被解释变量 （Explained Variable）</td>
-              </tr>
-              <tr>
-                <td>控制变量 （Controlled Variable）</td><td>响应变量 （Response Variable）</td>
-              </tr>
-              <tr>
-                <td>预测变量 （Predictor Variable）</td><td>被预测变量 （Predicted Variable）</td>
-              </tr>
-              <tr>
-                <td>回归元 （Regressor）</td><td>回归子 （Regressand）</td>
-              </tr>
-              <tr>
-                <td>特征 （Feature）</td><td>标签 （Label）</td>
-              </tr>
-              <tr style="border-bottom:1px solid black;">
-                <td>输入 （Income）</td><td>输出 （Outcome）</td>
-              </tr>
+                    <th><math><mi>X</mi></math></th><th>$Y$</th>
+                </tr>
+                <tr>
+                    <td>自变量 （Independent Variable）</td><td>因变量 （Dependent Variable）</td>
+                </tr>
+                <tr>
+                    <td>解释变量 （Explanatory Variable）</td><td>被解释变量 （Explained Variable）</td>
+                </tr>
+                <tr>
+                    <td>控制变量 （Controlled Variable）</td><td>响应变量 （Response Variable）</td>
+                </tr>
+                <tr>
+                    <td>预测变量 （Predictor Variable）</td><td>被预测变量 （Predicted Variable）</td>
+                </tr>
+                <tr>
+                    <td>回归元 （Regressor）</td><td>回归子 （Regressand）</td>
+                </tr>
+                <tr>
+                    <td>特征 （Feature）</td><td>标签 （Label）</td>
+                </tr>
+                <tr style="border-bottom:1px solid black;">
+                    <td>输入 （Income）</td><td>输出 （Outcome）</td>
+                </tr>
             </table>
 
             <p><b class="define-text">回归分析的形式化定义。 </b>给定一组数据$\mathcal{D}=\{(\boldsymbol{x}_1, y_1),(\boldsymbol{x}_2, y_2), \ldots, (\boldsymbol{x}_M, y_M)\}$，其中$\boldsymbol{x}_m$ 是解释变量，$y_m$ 是对应的被解释变量$(m = 1, \ldots, M)$。回归分析的目的是寻找一个函数来根据解释变量$\boldsymbol{x}_m$估计或预测被解释变量$y_m$，即</p>
             <p>$$\hat{y}_m = f_{\boldsymbol{\theta}}(\boldsymbol{x}_m)$$</p>
-            
             <p>这里，$f_{\boldsymbol{\theta}}(\cdot)$ 是用来建模解释变量和被解释变量之间关系的函数，被称为<b>回归函数</b>，$\boldsymbol{\theta}$是回归函数的参数。$\hat{y}_m$是回归函数对于${y}_m$的预测结果。在回归模型中，参数$\boldsymbol{\theta}$是一个未知量。</p>
+            <p>使用回归模型进行数据分析包括两个阶段：第一阶段是建立模型，其内容是根据数据$\mathcal{D}$选择回归函数$f_{\bm \theta}(\cdot)$，并计算出参数$\bm \theta$；第二阶段是使用模型，其内容是使用$f_{\bm \theta}(\cdot)$和计算出的参数$\bm \theta$，分析数据$\mathcal{D}$中自变量$x$和因变量$y$的关系，或者是给出数据$\mathcal{D}$之外的自变量$x'$，预测对应的因变量$y'$。</p>
+            <p><b class="define-text">回归模型的建模要素。 </b>回归模型的建立包括三个要素：回归函数、损失函数、参数求解。</p>
+            <ul>
+                <li>
+                    <p><b>回归函数</b>：在给定数据集$\mathcal{D}$之后，要选择合适的函数作为$f_{\bm \theta}(\cdot)$来建模自变量$x$和因变量$y$之间的关系。不同的回归分析模型会选择不同的回归函数，所以回归是一族模型的统称。<a href="#tab1.2">表<span style="color:rgb(171, 33, 4);">1.2</span>给出了一些常见的回归模型所采用的回归函数。</p>
+                    <table id="tab1.2" style="border-collapse:collapse; width:80%; text-align: left; margin: 0 auto;">
+                        <caption><span class="define-text">表 1.2</span>: 一些常见回归模型的回归函数</caption>
+                        <tr style="border-top:2px solid black; border-bottom:1px solid black;">
+                            <th>模型名称</th><th>回归函数$f_{\bm \theta}(\cdot)$</th><th>参数 $\bm{\theta}$</th>
+                        </tr>
+                        <tr>
+                            <td>线性回归</td><td>$y= b + w_1 x_1 + \dots + w_N x_N$</td><td>$(b, w_1, \dots, w_N)$</td>
+                        </tr>
+                        <tr>
+                            <td>逻辑回归</td><td>$y= \frac{1}{1+\exp(b+\bm{w}^\top\bm{x})}$</td><td>$(b, \bm{w}^\top)$</td>
+                        </tr>
+                        <tr>
+                            <td>多项逻辑回归</td><td>$y_k= \frac{\exp(\bm{\theta}_k^\top \tilde{\bm{x}})}{\sum_{j=1}^{K} \exp(\bm{\theta}_j^\top \tilde{\bm{x}})}$</td><td>$(\bm{\theta}_1, \bm{\theta}_2, \dots, \bm{\theta}_K)$</td>
+                        </tr>
+                        <tr>
+                            <td>多项式回归</td><td>$y = b + w_1 x + w_2 x^2 + \dots + w_N x^N$</td><td>$(b, w_1, \dots, w_N)$</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid black;">
+                            <td>自回归</td><td>$x_{t+1} = w_1 x_{t} + w_2 x_{t-1}+ \dots + w_p x_{t-p+1}$</td><td>$(w_1, w_2, \dots, w_p)$</td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <p><b>损失函数</b>：在给定回归函数后，我们可以通过$f_{\bm \theta}(\bm{x}_m)$来计算回归函数对于因变量$y_m$的预测，即$\hat{y}_m$。我们需要有一个函数来评估预测效果的好坏，这就是<b>损失函数（Loss Function）</b>，也称<b>代价函数（Cost Function）</b>。给定因变量$\{y_1, \dots, y_m , \dots , y_M\}$以及其对应的预测值$\{\hat{y}_1,\dots,\hat{y}_m,…\hat{y}_M\}$，损失函数记为</p>
+                    <p>$$\mathcal{L}(\bm{\theta}) = \frac{1}{N} \sum_{m=1}^{M} L(\hat{y}_m(\bm{\theta}, \bm{x}_m), y_m),$$</p>
+                    <p>其中，$L(\cdot, \cdot)$是$\hat{y}_m$和$y_m$之间的误差度量函数。对于连续性的因变量$y_i$（比率类型、区间类型），常见的误差度量方法有均方误差（Mean Square Error，简称 MSE），平均绝对误差（Mean Absolute Error，简称 MAE）等；对于离散性的因变量$y_i$（如标称类型、序数类型），常见的误差度量方法有交叉熵（Cross Entropy），准确率（Accuracy），精确率（Precision）等。<a href="#tab1.3">表<span style="color:rgb(171, 33, 4);">1.3</span>给出了常见的误差度量方法及其适用类型。在回归模型中，误差度量的目的是为了计算最优的参数$\bm\theta$，在选择误差度量函数时要考虑参数求解的难度（例如是否可导等），因此并不是所有的误差度量方法都可以用来计算损失函数。</p>
+                    <table id="tab1.3" style="border-collapse:collapse; width:80%; text-align: left; margin: 0 auto;">
+                        <caption><span class="define-text">表 1.3</span>: 一些常见的误差度量函数</caption>
+                        <tr style="border-top:2px solid black; border-bottom:1px solid black;">
+                            <th>误差度量</th><th>$L(\hat{y}_m(\bm{\theta}, \bm{x}_m), y_m)$</th><th>适用因变量类型</th>
+                        </tr>
+                        <tr>
+                            <td>均方误差 MSE</td><td>$\frac{1}{M}\sum_{m=1}^{M} (\hat{y}_m - y_m)^2$</td><td>连续型</td>
+                        </tr>
+                        <tr>
+                            <td>均方根误差 RMSE</td><td>$\sqrt{\frac{1}{M}\sum_{m=1}^{M} (\hat{y}_m - y_m)^2}$</td><td>连续型</td>
+                        </tr>
+                        <tr>
+                            <td>平均绝对误差 MAE</td><td>$\frac{1}{M}\sum_{m=1}^{M} |\hat{y}_m - y_m|$</td><td>连续型</td>
+                        </tr>
+                        <tr>
+                            <td>平均绝对百分比误差 MAPE</td><td>$\frac{1}{M}\sum_{m=1}^{M} |\frac{\hat{y}_m - y_m}{y_m}|$</td><td>连续型</td>
+                        </tr>
+                        <tr>
+                            <td>交叉熵</td><td>$-\frac{1}{M}\sum_{m=1}^{M}\sum_{k=1}^{K} y_{k,m} \log p_{k,m}$</td><td>离散型</td>
+                        </tr>
+                        <tr>
+                            <td>准确率</td><td>$1 - \frac{\mathrm{\#~error~items}}{\mathrm{\#~all~items}}$</td><td>离散型</td>
+                        </tr>
+                        <tr>
+                            <td>精确率 Precision</td><td>$\frac{\mathrm{True~Positives}}{\mathrm{True ~Positives+False~Positives}}$</td><td>离散型</td>
+                        </tr>
+                        <tr>
+                            <td>召回率 Recall</td><td>$\frac{\mathrm{True~Positives}}{\mathrm{True~Positives+False~Negatives}}$</td><td>离散型</td>
+                        </tr>
+                        <tr>
+                            <td>F1 Score</td><td>$\frac{\mathrm{2*Precision*Recall}}{\mathrm{Precision + Recall}}$</td><td>离散型</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid black;">
+                            <td>AUC 值</td><td>ROC曲线下的面积</td><td>离散型</td>
+                        </tr>
+                    </table>    
+                </li>
+                <li>
+                    <p><b>参数求解</b>：给定损失函数的目的是为了求解符合数据集$\mathcal{D}$的参数$\bm\theta$。根据公式(1.1.2)可知，损失函数是回归模型参数$\bm\theta$的函数。显然，在所有可能的$\bm\theta$中，能够使预测误差（损失函数）最小的$\bm\theta$是最优参数。给定数据集合$\mathcal{D}$，回归分析通常以最小化损失函数的方式来计算最优参数$\bm\theta^*$，即计算</p>
+                    <p>$$\bm\theta^*=\mathop{\arg\min}\limits_{\bm\theta} \mathcal{L}(\bm\theta)$$</p>
+                </li>
+            </ul>
+            <p><b class="define-text">回归模型的模型使用。 </b>在获得参数$\bm\theta$后，我们就可以使用回归模型来分析数据。常见的方式有两种。一是变量预测。在拿到一个新的$\bm{x}_m$样本时，通过$\hat{y}_m = f(\bm{x}_m, \bm\theta)$预测与$\bm{x}_m$对应的被解释变量$y_m$的值；二是关系解释。通过分析回归函数$f(\cdot, \theta)$，尤其是参数$\bm\theta$的性质来分析解释变量$\bm{x}_m$和被解释变量$y_m$之间的关系。</p>
+            <p><b class="define-text">机器学习中的回归问题与分类问题。 </b>在机器学习当中，为了对被解释变量是连续值还是离散值进行区分，会将$y$是连续值的预测问题称之为回归问题，将$y$是离散值的预测问题称之为<b>分类问题（Classification）</b>。在后面的章节中我们会发现，回归分析模型既可以解决回归问题也可以解决分类问题。例如，逻辑回归模型就是为了解决分类问题而设计的。</p>
+
 
         </div>
         <div class="sidebar">
