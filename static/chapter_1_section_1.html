@@ -105,7 +105,7 @@
             <ul>
                 <li>
                     <p><b>回归函数</b>：在给定数据集$\mathcal{D}$之后，要选择合适的函数作为$f_{\bm \theta}(\cdot)$来建模自变量$x$和因变量$y$之间的关系。不同的回归分析模型会选择不同的回归函数，所以回归是一族模型的统称。<a href="#tab1.2">表<span style="color:rgb(171, 33, 4);">1.2</span>给出了一些常见的回归模型所采用的回归函数。</p>
-                    <table id="tab1.2" style="border-collapse:collapse; width:90%; text-align: left; margin: 0 auto;">
+                    <table id="tab1.2" style="border-collapse:collapse; width:100%; text-align: left; margin: 0 auto;">
                         <caption><span class="define-text">表 1.2</span>: 一些常见回归模型的回归函数</caption>
                         <tr style="border-top:2px solid black; border-bottom:1px solid black;">
                             <th>模型名称</th><th>回归函数$f_{\bm \theta}(\cdot)$</th><th>参数 $\bm{\theta}$</th>
@@ -131,7 +131,7 @@
                     <p><b>损失函数</b>：在给定回归函数后，我们可以通过$f_{\bm \theta}(\bm{x}_m)$来计算回归函数对于因变量$y_m$的预测，即$\hat{y}_m$。我们需要有一个函数来评估预测效果的好坏，这就是<b>损失函数（Loss Function）</b>，也称<b>代价函数（Cost Function）</b>。给定因变量$\{y_1, \dots, y_m , \dots , y_M\}$以及其对应的预测值$\{\hat{y}_1,\dots,\hat{y}_m,…\hat{y}_M\}$，损失函数记为</p>
                     <p>$$\mathcal{L}(\bm{\theta}) = \frac{1}{N} \sum_{m=1}^{M} L(\hat{y}_m(\bm{\theta}, \bm{x}_m), y_m),$$</p>
                     <p>其中，$L(\cdot, \cdot)$是$\hat{y}_m$和$y_m$之间的误差度量函数。对于连续性的因变量$y_i$（比率类型、区间类型），常见的误差度量方法有均方误差（Mean Square Error，简称 MSE），平均绝对误差（Mean Absolute Error，简称 MAE）等；对于离散性的因变量$y_i$（如标称类型、序数类型），常见的误差度量方法有交叉熵（Cross Entropy），准确率（Accuracy），精确率（Precision）等。<a href="#tab1.3">表<span style="color:rgb(171, 33, 4);">1.3</span>给出了常见的误差度量方法及其适用类型。在回归模型中，误差度量的目的是为了计算最优的参数$\bm\theta$，在选择误差度量函数时要考虑参数求解的难度（例如是否可导等），因此并不是所有的误差度量方法都可以用来计算损失函数。</p>
-                    <table id="tab1.3" style="border-collapse:collapse; width:90%; text-align: left; margin: 0 auto;">
+                    <table id="tab1.3" style="border-collapse:collapse; width:100%; text-align: left; margin: 0 auto;">
                         <caption><span class="define-text">表 1.3</span>: 一些常见的误差度量函数</caption>
                         <tr style="border-top:2px solid black; border-bottom:1px solid black;">
                             <th>误差度量</th><th>$L(\hat{y}_m(\bm{\theta}, \bm{x}_m), y_m)$</th><th>适用因变量类型</th>
