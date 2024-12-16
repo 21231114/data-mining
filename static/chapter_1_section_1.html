@@ -186,7 +186,7 @@
             <p>回归分析通常包括几个步骤：数据准备、模型建立、模型求解、模型使用。下面我们用某学校附近租房价格预测的例子进行说明。</p>
             <table style="text-align: center;">                
                 <tr>
-                    <td id="fig1.1a"><img style="width:100%" src="figures/4-LinearModel/tenancy_train.pdf" alt="(a)模型建立与求解"></td><td id="fig1.1b"><img style="width:100%" src="figures/4-LinearModel/tenancy_test.pdf" alt="(b)模型使用"></td>
+                    <td id="fig1.1a"><img style="width:100%" src="figures/4-LinearModel/tenancy_train_00.png" alt="(a)模型建立与求解"></td><td id="fig1.1b"><img style="width:100%" src="figures/4-LinearModel/tenancy_test_00.png" alt="(b)模型使用"></td>
                 </tr>
                 <tr>
                     <td>（a）模型建立与求解</td><td>（b）模型使用</td>
@@ -216,7 +216,7 @@
             <p>$$y=0.516x+0.8567$$</p>
             <p>其中，$y$表示子辈身高，$x$表示父辈身高，单位为米。</p>
             <p>如<a href="#fig1.1a">图<span style="color:rgb(171, 33, 4);">1.2</span></a>所示，公式(1.1.4)有一个有趣的性质，当$x$大于1.77米时$y$会小于$x$，也就是子辈的身高会低于父辈；当$x$小于1.77米时$y$会大于$x$，也就是子辈的身高会高于父辈。而1.77米又差不多恰好是父辈的平均身高。换言之，无论父辈的身高是高于平均身高，还是低于平均身高，子辈的身高都会趋向于“向均值回归”。极端的情况下，如果父辈的远高于平均身高，那么子辈个子虽然也会高，但是很难比父辈更高。这种现象后来被证明在自然现象中是广泛存在的（与之相反的是“马太效应”，通常存在于社会现象中）。在2500年前，老子在《道德经》中说：“天之道，损有余而补不足。人之道则不然，损不足以奉有余。”就是对于“均值回归”和“马太效应”现象的哲学论述。</p>
-            <p style="text-align: center;"><img id="fig1.2" style="width: 45%; " src="figures/4-LinearModel/height_regression.pdf" alt="1.2"></p>
+            <p style="text-align: center;"><img id="fig1.2" style="width: 45%; " src="figures/4-LinearModel/height_regression_00.png" alt="1.2"></p>
             <p style="text-align: center;"><span class="define-text">图 1.2</span>: 图中横轴是父辈的身高，蓝色线标识出了对应父辈身高下子辈的身高。我们同时用红色线和灰色线标出父辈身高和平均身高作为参考。可以看出，当父辈身高低于平均时，子辈的身高会高于父辈，当父辈身高高于平均时，子辈会低于父辈。呈现向均值回归现象。</p>
             <p>“均值回归”现象最早是通过建立变量$x$与变量$y$之间的关系模型的方式被发现的，后来人们就将“回归”这个名词保留了下来，特指这种使用解释变量预测被解释变量的建模方法。虽然其研究的问题已经不再局限于“向均值回归”现象。</p>
         </div>
