@@ -3,21 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初探强化学习</title>
+    <title>回归分析模型族</title>
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            MathJax.typesetPromise();
+        });
+    </script> -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?version=1.0"></script>
+    <!-- <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script> -->
+    <!-- <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script> -->
     <style>
         body {
             display: flex;
             font-family: Arial, sans-serif;
             margin: 0; /* 去掉默认边距 */
         }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
         .content {
             flex: 5; 
             padding: 20px;
+            line-height: 1.7;
         }
         .sidebar {
             flex: 1; 
             padding: 20px;
             background-color: #f0f0f0;
+            line-height: 1.0;
         }
         h1, h2 {
             margin-top: 0;
@@ -25,26 +50,193 @@
         .integrity {
             display: flex; /* 确保内容和边栏在同一行 */
             width: 100%; /* 使其占满整个宽度 */
+            justify-content: left;
         }
+        .define-text {
+            font-weight: bold;
+            color: rgb(60, 113, 183);
+        }
+        .right-align {
+            text-align: right;
+        }
+        .imagecontainer {
+            display: inline-block; /* 使两张图片并排显示 */
+            /* vertical-align: middle; 使图片与下方的元素保持相同的基线 */
+            margin: 0 10px; /* 设置左右间距为10像素 */
+            width: 80%; 
+            /* text-align: center; 使图片在一行内居中显示 */
+        }
+        img { max-width: 100%; height: auto; } /* 确保图片自适应容器大小 */
     </style>
 </head>
 <body>
-    <div class="integrity">
+    <div class="integrity" style="text-align: left;">
         <div class="content">
-            <h1>第 1 章 初探强化学习</h1>
-            <h2>1.1 简介</h2>
-            <p>亲爱的读者，欢迎来到强化学习的世界。初探强化学习，你是否充满了好奇和期待呢？我们想说，首先感谢你的选择，学习本书不仅能够帮助你理解强化学习的算法原理，提高代码实践能力，更能让你了解自己是否喜欢决策智能这个方向，从而更好地决策未来是否从事人工智能方面的研究实践工作。人生中充满选择，每次选择就是一次决策，我们正是从一次次决策中，把自己带领到人生的下一阶段旅程中。在回忆往事时，我们会对生命中某些时刻的决策印象深刻：“还好我当时选择了读博，我在那几年找到了自己的兴趣所在，现在我能做自己喜欢的工作！”“唉，当初我要是去那家公司实习就好了，在那里做的技术研究现在带来了巨大的社会价值。”通过这些反思，我们或许能领悟一些道理，变得更加睿智和成熟，以更加积极的精神来迎接未来的选择和成长。</p>
-            <p>在机器学习领域，有一类重要的任务和人生选择很相似，即序贯决策（sequential decision making）任务。决策和预测任务不同，决策往往会带来“后果”，因此决策者需要为未来负责，在未来的时间点做出进一步的决策。实现序贯决策的机器学习方法就是本书讨论的主题——强化学习（reinforcement learning）。预测仅仅产生一个针对输入数据的信号，并期望它和未来可观测到的信号一致，这不会使未来情况发生任何改变。</p>
-            <p>本章主要讨论强化学习的基本概念和思维方式。希望通过本章的讨论，读者能了解强化学习在解决什么任务，其基本的数学刻画是什么样的，学习的目标是什么，以及它和预测型的有监督学习方法有什么根本性的区别。而关于如何设计强化学习算法，我们会在接下来的章节里面细细讨论。</p>
+            <h1>第一章 回归分析模型族</h1>
+            <h2>2 线性回归</h2>
+            <h3 id="part1">2.1 线性回归的模型要素</h3>
+            <h3 id="part1">知识点 1.2 线性回归的建模</h3>
+            <p>在这里，我们通过介绍回归模型建立的三要素（<b>回归函数</b>、<b>损失函数</b>、<b>参数求解</b>）来介绍线性回归模型。</p>
+            <p><b class="define-text">回归函数。 </b><b>线性回归（Linear Regression）</b>是使用线性方程作为回归函数的回归分析模型。线性回归使用线性函数建模自变量$x$和因变量$y$之间的关系，其将因变量表达成一个或多个自变量的线性组合。</p>
+            <p>给定一个包含了$M$个样本的数据集：</p>
+            <p>$$\mathcal{D}=\{(\bm x_1, y_1),(\bm x_2, y_2), \ldots, (\bm x_M, y_M)\},$$</p>
+            <p>其中 $\bm{x}_m \in \mathbb{R}^{N}$ 为 $N$ 维列向量，$y_m \in \mathbb{R}$ 为标量，$m=1, 2, \ldots, M$，这里 $\bm{x}$ 为自变量，$y$ 为因变量。</p>
+            <p>线性回归模型使用自变量$x$的线性组合预测因变量$y$，其形式为</p>
+            <p>$$\hat{y}_m = f_{\bm \theta}(\bm x_m) = b + w_1 x_{m,1} + \cdots + w_N x_{m,N}$$
+                $$= b + \bm w^{\top} \bm x_m$$
+                $$= \bm\theta^{\top} \tilde{\bm{x}}_m.$$</p>
+            <p>其中 $\top$ 为转置操作，</p>
+            <ul>
+                <li>
+                    <p>$\bm w = (w_1, \ldots, w_N)^{\top} \in \mathbb{R}^{N}$ 为 $N$ 维列向量，称为权重（Weight）；</p>
+                </li>
+                <li>
+                    <p>$b\in \mathbb{R}$ 称为偏置（Bias）；</p>
+                </li>
+                <li>
+                    <p>$\bm \theta = (b, w_1, \ldots, w_N)^{\top}$ 称为参数（Parameter）；</p>
+                </li>
+                <li>
+                    <p>$\tilde{\bm{x}}_m$是在$\bm{x}_m$的第一个分量前加上$1$形成的，即$\tilde{\bm{x}}_m=(1, x_{m,1},\ldots, x_{m, N})^{\top}$；</p>
+                </li>
+                <li>
+                    <p>$\hat{y}_m$ 代表模型对真实值 $y_m$ 的预测或估计。</p>
+                </li>
+            </ul>
+            <p><b class="define-text">损失函数。 </b>线性回归使用<b>均方误差（Mean Square Error，简称MSE）</b>作为损失函数来度量$\hat{y}_m$ 和$y_m$ 之间的预测误差，其定义为</p>
+            <p>$$\mathcal{L}(\bm \theta) = \frac{1}{M}\sum_{m=1}^{M} \left(\hat{y}_m - y_m\right)^2 = \frac{1}{M}\sum_{m=1}^{M} \left(\bm\theta^{\top} \tilde{\bm x}_m - y_m\right)^2.$$</p>
+            <p>均方误差也是因变量为连续值的回归模型（也就是在机器学习或数据挖掘中的回归问题）最常用的损失函数。</p>
+            <p><b class="define-text">参数求解。 </b>给定的数据集$\mathcal{D}$，线性回归的参数求解的优化目标就是最小化均方误差的损失函数，即</p>
+            <p>$$\bm\theta^*=\mathop{\arg\min}\limits_{\bm \theta} \frac{1}{M} \sum_{m=1}^{M} \left(\bm{\theta}^\top\tilde{\bm{x}}_m - y_m\right)^2.$$</p>
+            <p>求解优化目标有多种不同的方法。对于线性回归有能够直接求出闭式解的最小二乘法，以及基于启发式方法的梯度下降法等。我们将在下一节分别对这两种优化目标求解方法进行介绍。</p>
+
+            <h3 id="part1">2.2 线性回归的参数求解</h3>
+            <h3 id="part1">知识点 1.3 线性回归的参数求解：最小二乘法</h3>
+            <p>最小二乘法是求解线性回归参数的基本方法。最小二乘法的本质就是使用求函数极值的方式求解公式~\eqref{eq:mse_loss_2}~。在公式~\eqref{eq:mse_loss_2}~中，我们的优化目标是最小化一个平方项，“最小二乘”也因此得名。</p>
+            <p>首先，我们将线性回归的损失函数~\eqref{eq:lr:mse_loss}~写成矩阵的表达形式。对于回归模型中的样本集合$\mathcal{D}$，定义其自变量矩阵为：</p>
+            <p>$$\tilde{\bm{X}} = \left(
+                \begin{matrix}
+                    1      & x_{1,1} & \cdots & x_{1,N} \\
+                    1      & x_{2,1} & \cdots & x_{2,N} \\
+                    \vdots & \vdots & \ddots & \vdots \\
+                    1      & x_{M,1} & \cdots & x_{M,N} \\
+                \end{matrix}\right).$$</p>
+            <p>其中每一行为${\tilde{\bm{x}}_m}^{\top}(m = 1, \ldots, M)$ ，表示一个样本。矩阵 $\tilde{\bm{X}}$ 的第一列是为了方便表达回归模式而对原始自变量矩阵的增广。同样地，使用所有样本的因变量值构造一个向量 </p>
+            <p>$$\bm{y} = (y_1, \ldots, y_M)^{\top}.$$</p>
+            <p>那么，线性回归的损失函数~\eqref{eq:lr:mse_loss}~就可以表达为</p>
+            <p>$$\mathcal{L}(\bm \theta) = \sum_{m=1}^{M} \left(f_{\bm \theta}(\bm x_m) - y_m\right)^2$$
+                $$= \sum_{m=1}^{M} \left(b \cdot 1 + w_1 \cdot x_{m,1} + \cdots + w_N \cdot x_{m,N} - y_m\right)^2$$
+                $$= \sum_{m=1}^{M} \left(\bm{\theta}^{\top}\tilde{\bm{x}}_m - y_m\right)^2$$
+                $$= (\tilde{\bm{X}}\bm{\theta} - \bm{y})^{\top}(\tilde{\bm{X}}\bm{\theta} - \bm{y}).$$</p>
+            <p>细心的读者会发现，这里用到的损失函数与公式~\eqref{eq:lr:mse_loss}~ 相比少了系数项$\frac{1}{M}$。这是因为该系数不会影响到参数的求解，为了方便表达，我们省略了该系数。</p>
+            <p>根据微积分基本知识，对于一个简单实值函数，在一阶导等于零的点可以取得极值，若该函数的二阶导恒大于零则该极值点为最值点。扩展到多元实值函数，大于零的约束就会变成正定矩阵。根据这一原理，我们令$\mathcal{L}(\bm \theta)$ 一阶导为零即可获得极值点对应的$\bm \theta$，并通过计算二阶导判断$\mathcal{L}(\bm \theta)$是否取得最小值。</p>
+            <p>为了求解$\mathcal{L}(\bm \theta)$ 的一阶导和二阶导，我们将其展开为</p>
+            <p>$$\mathcal{L}(\bm{\theta})=\bm{\theta}^{\top}\tilde{\bm{X}}^{\top}\tilde{\bm{X}}\bm{\theta}-\bm{\theta}^{\top}\tilde{\bm{X}}^{\top}\bm{y}-\bm{y}^{\top}\tilde{\bm{X}}\bm{\theta}+\bm{y}^{\top}\bm{y},$$</p>
+            <p>求一阶导可得：</p>
+            <p>$$\frac{\partial \mathcal{L}(\bm{\theta})}{\partial \bm{\theta}} = \frac{\partial \bm{\theta}^{\top}\tilde{\bm{X}}^{\top}\tilde{\bm{X}}\bm{\theta}}{\partial \bm{\theta}} - \frac{\partial \bm{\theta}^{\top}\tilde{\bm{X}}^{\top}\bm{y}}{\partial \bm{\theta}}-\frac{\partial \bm{y}^{\top}\tilde{\bm{X}}\bm{\theta}}{\partial \bm{\theta}}+\frac{\partial \bm{y}^{\top}\bm{y}}{\partial \bm{\theta}}$$
+                $$=\left[\left(\tilde{\bm{X}}^{\top}\tilde{\bm{X}}\right)\bm{\theta} + \left(\tilde{\bm{X}}^{\top}\tilde{\bm{X}}\right)^{\top}\bm{\theta}\right] - \tilde{\bm{X}}^{\top}\bm{y} - \tilde{\bm{X}}^{\top}\bm{y} + 0$$
+                $$=2\tilde{\bm{X}}^{\top}\tilde{\bm{X}}\bm{\theta} - 2\tilde{\bm{X}}^{\top}\bm{y},$$</p>
+            <p>令一阶导数为零，可得极值点为</p>
+            <p>$$\frac{\partial \mathcal{L}(\bm{\theta})}{\partial \bm{\theta}} = 0$$
+                $$\Rightarrow\quad 2\tilde{\bm{X}}^{\top}\tilde{\bm{X}}\bm{\theta} - 2\tilde{\bm{X}}^{\top}\bm{y} = 0$$
+                $$\Rightarrow\quad \tilde{\bm{X}}^{\top}\tilde{\bm{X}}\bm{\theta} = \tilde{\bm{X}}^{\top}\bm{y}$$
+                $$\Rightarrow\quad \bm{\theta^{*}} = \left(\tilde{\bm{X}}^{\top}\tilde{\bm{X}}\right)^{-1}\tilde{\bm{X}}^{\top}\bm{y}.$$</p>
+            <p>再求二阶导可得：</p>
+            <p>$$\frac{\partial^2 \mathcal{L}(\bm{\theta})}{\partial \bm{\theta}^2} = \frac{\partial \left(2\tilde{\bm{X}}^{\top}\tilde{\bm{X}}\bm{\theta}\right)}{\partial \bm{\theta}} - \frac{\partial \left(2\tilde{\bm{X}}^{\top}\bm{y}\right)}{\partial \bm{\theta}} = 2\tilde{\bm{X}}^{\top}\tilde{\bm{X}}.$$</p>
+            <p>根据正定矩阵的性质~\cite{tongji2014}，当$\tilde{\bm X}$是列满秩矩阵，则是正定矩阵。因此，$\bm\theta = \bm\theta^*$时$\mathcal{L}$取极小值，最小二乘法的结果为</p>
+            <p>$$\bm{\theta}^* = \left(\tilde{\bm{X}}^{\top}\tilde{\bm{X}}\right)^{-1}\tilde{\bm{X}}^{\top}\bm{y}.$$</p>
+            <p>大家要注意的是，上述求解方法要求$\tilde{\bm{X}}$是列满秩矩阵，这就要求：</p>
+            <ul>
+                <li>
+                    <p>矩阵$\tilde{\bm{X}}$的每一列都是线性无关的。其物理含义为，样本的各个自变量（特征）之间是线性无关的，也就是每一个特征都必须携带有独立的变化信息，不存在某个特征可以表示为其他特征的线性组合的情况，也称之为不存在多重共线性。</p>
+                </li>
+                <li>
+                    <p>此外, 矩阵$\tilde{\bm{X}}$列满秩也意味着$M \geq N+1$，即需要保证样本个数大于特征个数。若不满足，模型将无法直接得到每个特征对应待估参数的值，只能得到一些特征之间的联合影响。</p>
+                </li>
+            </ul>
+            <p><b class="define-text">最小二乘法的不足。 </b>最小二乘法虽然可以直接获得线性回归模型参数的闭式解（也称解析解），但是其自身却有很大的局限性：</p>
+            <ul>
+                <li>
+                    <p>计算复杂度问题。根据公式~\eqref{eq:lr:theta_star}~求线性回归参数的解析解需要计算矩阵的逆，矩阵求逆是一种计算复杂度非常高的计算，一般的时间复杂度为$O(N^3)$，空间复杂度为$O(N^2)$，直接计算效率很低。在这里$N$是特征的数量，对于一些高维特征的应用（如自然语言处理、生物信息学等）会很不适用。同时，当数据的样本数量很多时，计算矩阵$\tilde{\bm{X}}$与其自身的内积的计算复杂度也会非常高，这对于大数据场景很不适用。</p>
+                </li>
+                <li>
+                    <p>无法求解问题。矩阵 $\tilde{\bm{X}}^\top\tilde{\bm{X}}$ 可逆至少还需要自变量样本矩阵 $\tilde{\bm{X}}$ 满足如下两个条件：（1）训练样本数量不少于特征数量，即矩阵行数大于列数，这一点在高维特征场景中经常难以满足。（2）特征之间不可以存在线性关系。以上这些缺点都限制了最小二乘法在实际数据挖掘问题中的应用，因而在实际应用中，更加常用的方法是梯度下降法，它是一种迭代式的优化算法。</p>
+                </li>
+            </ul>
+            <p>面对数据量大、特征维度高的实际数据挖掘问题，人们通常使用迭代式优化的方法进行参数求解，相关知识将在知识点1.4中介绍。</p>
+            
+            <h3 id="part1">知识点 1.4 梯度下降法</h3>
+            <p><b class="define-text">梯度下降的基本原理。 </b><b>梯度下降（Gradient Descent）</b>，是一种迭代式的优化方法。给定待优化的函数$\mathcal{L}(\bm \theta)$，梯度下降法以一个随机的初始值$\bm \theta^{(0)}$作为起点，沿着$\mathcal{L}(\bm \theta)$对于$\bm \theta$负梯度的方向迭代地更新$\bm \theta$，直到$\mathcal{L}(\bm \theta)$的值不再随着更新而下降（算法收敛）。由于负梯度方向是$\mathcal{L}$随$\bm \theta$下降最快的方向，因此梯度下降是一种非常高效的无约束优化问题求解方法。</p>
+            <p>图~\ref{fig:lr:gd}~展示了一个例子，当 $x<1$ 时，函数的导数 $f'(x) < 0$，所以我们向右移动 $x$ 可以减小 $f(x)$，因为在 $x$ 轴上，向右为正向，向左为负向。类似的，当 $x>1$ 时，函数的导数 $f'(x) > 0$，所以我们向左移动 $x$ 可以减小 $f(x)$。当 $f'(x)=0$ 的时候，由于导数无法提供往哪个方向移动的信息，此时，$x$ 所在的点被称为<b>临界点</b>（Critical Point）或<b>驻点</b>（Stationary Point）。</p>
+            <p style="text-align: center;"><img id="fig1.3" style="width: 45%; " src="figures/4-LinearModel/directive.pdf" alt="1.3"></p>
+            <p style="text-align: center;"><span class="define-text">图 1.3</span>: 梯度下降示例</p>
+            <p><b class="define-text">梯度下降的形式化表达。 </b>对于函数$\mathcal{L}:\mathbb{R}^{N+1} \rightarrow \mathbb{R}$，给定无约束优化问题</p>
+            <p>$$\mathop{\min}_{\bm \theta} \mathcal{L}(\bm \theta).$$</p>
+            <p>使用梯度下降法求解最优参数$\bm\theta^*$的步骤包括三步：</p>
+            <ul>
+                <li>
+                    <p>步骤1。给出一个随机初始化的参数$\bm{\theta^{(0)}}$，显然$\mathcal{L}(\bm\theta^{(0)}) \geq \mathcal{L}(\bm\theta^*)$。</p>
+                </li>
+                <li>
+                    <p>步骤2。迭代更新参数$\bm \theta$，更新方向为$\mathcal{L}(\bm \theta)$对于$\bm\theta$的负梯度方向。在第$t$轮时，更新方程为</p>
+                    <p>$$\bm{\theta}^{(t+1)} = \bm{\theta}^{(t)} - \eta \frac{\partial \mathcal{L}(\bm{\theta}^{(t)})}{\partial \bm{\theta}},$$</p>
+                    <p>其中，$\eta$ 被称为学习率，满足 $\eta >0$。</p>
+                </li>
+                <li>
+                    <p>步骤3。选定一个非常小的正数$\delta$，当$\mathcal{L}(\bm\theta^{(t)}) -\mathcal{L}(\bm\theta^{(t+1)})<\delta$时，停止迭代，$\bm\theta^{*} \leftarrow \bm\theta^{(t)}$。停止迭代条件也可以是迭代达到规定的轮数，还可以是二者的组合。</p>
+                </li>
+            </ul>
+
+
+
+            <p>这里，$f_{\boldsymbol{\theta}}(\cdot)$ 是用来建模解释变量和被解释变量之间关系的函数，被称为<b>回归函数</b>，$\boldsymbol{\theta}$是回归函数的参数。$\hat{y}_m$是回归函数对于${y}_m$的预测结果。在回归模型中，参数$\boldsymbol{\theta}$是一个未知量。</p>
+            <p>使用回归模型进行数据分析包括两个阶段：第一阶段是建立模型，其内容是根据数据$\mathcal{D}$选择回归函数$f_{\bm \theta}(\cdot)$，并计算出参数$\bm \theta$；第二阶段是使用模型，其内容是使用$f_{\bm \theta}(\cdot)$和计算出的参数$\bm \theta$，分析数据$\mathcal{D}$中自变量$x$和因变量$y$的关系，或者是给出数据$\mathcal{D}$之外的自变量$x'$，预测对应的因变量$y'$。</p>
+            <p><b class="define-text">回归模型的建模要素。 </b>回归模型的建立包括三个要素：回归函数、损失函数、参数求解。</p>
+            <p><b class="define-text">回归模型的模型使用。 </b>在获得参数$\bm\theta$后，我们就可以使用回归模型来分析数据。常见的方式有两种。一是变量预测。在拿到一个新的$\bm{x}_m$样本时，通过$\hat{y}_m = f(\bm{x}_m, \bm\theta)$预测与$\bm{x}_m$对应的被解释变量$y_m$的值；二是关系解释。通过分析回归函数$f(\cdot, \theta)$，尤其是参数$\bm\theta$的性质来分析解释变量$\bm{x}_m$和被解释变量$y_m$之间的关系。</p>
+            <p><b class="define-text">机器学习中的回归问题与分类问题。 </b>在机器学习当中，为了对被解释变量是连续值还是离散值进行区分，会将$y$是连续值的预测问题称之为回归问题，将$y$是离散值的预测问题称之为<b>分类问题（Classification）</b>。在后面的章节中我们会发现，回归分析模型既可以解决回归问题也可以解决分类问题。例如，逻辑回归模型就是为了解决分类问题而设计的。</p>
+            
+            <h3 id="part2">实例 1.1 某学校附近租房价格预测</h3>
+            <p>回归分析通常包括几个步骤：数据准备、模型建立、模型求解、模型使用。下面我们用某学校附近租房价格预测的例子进行说明。</p>
+            <table style="text-align: center;">                
+                <tr>
+                    <td id="fig1.1a"><img style="width:100%" src="figures/4-LinearModel/tenancy_train.pdf" alt="(a)模型建立与求解"></td><td id="fig1.1b"><img style="width:100%" src="figures/4-LinearModel/tenancy_test.pdf" alt="(b)模型使用"></td>
+                </tr>
+                <tr>
+                    <td>（a）模型建立与求解</td><td>（b）模型使用</td>
+                </tr>
+            </table>
+            <p style="text-align: center;"><span class="define-text">图 1.1</span>: 某学校附近房租回归分析示例</p>
+            <ul>
+                <li>
+                    <p>数据准备：我们收集到了一些房屋面积（单位：平方米）和租房价格（单位：元/月）的数据，表示为集合：</p>
+                    <p>$$\{(78, 6600), (71, 6500), (60, 4900), (48, 4500), (52, 3800), (45, 4300)\}$$</p>
+                    <p>其中样本 $(78, 6600)$ 代表大小为 78 平方米的房子需要 6600 元/月的租金。</p>
+                </li>
+                <li>
+                    <p>模型建立：我们选择最简单的线性回归模型，即 $y=wx+b$，这里 $y$ 代表房租价格，$x$ 代表房屋面积，$w,b$均为待求解的参数。</p>
+                </li>
+                <li>
+                    <p>模型求解：有多种方式可以求解回归模型，我们会在章节2展开讨论，这里我们直接给出求解结果：$w=82.6, b=228.4$，即最终的回归模型为：$y = 82.6x+228.4$，如<a href="#fig1.1a">图<span style="color:rgb(171, 33, 4);">1.1（a）</span></a>所示。</p>
+                </li>
+                <li>
+                    <p>模型使用：从$w$的值我们可以得知，房屋面积每增加 1 平方米，租房价格增加 82.6 元；另外，我们可以利用该模型进行预测，比如我们有一个该学校周边 20 平方米的房子，出租多少钱合适？这时，模型就会给出答案：$y = 82.6 \times 20 + 228.4 = 1880.4$。当然我们也可以问 50 平方米甚至 100 平方米的房租价格，如<a href="#fig1.1b">图<span style="color:rgb(171, 33, 4);">1.1（b）</span></a>所示。</p>
+                </li>
+            </ul>
+            
+            <h3 id="part3">延伸阅读 1.1 为什么一个预测模型会被称为回归？</h3>
+            <p>很多人会好奇，我们为什么会用“回归”这样一个词来描述一个预测模型的建立过程。其实，“回归”一词来自于自然界的一种现象：向平均值回归（Regression toward the mean）。该现象是指对于同一个随机变量，如果一个样本的取值非常极端，那么同一随机变量的下一个样本可能更接近其均值。</p>
+            <p>这一现象最早是由英国科学家和探险家弗朗西斯·高尔顿（Francis Galton，1822–1911）发现的。1886年，高尔顿在一篇题为“Regression towards mediocrity in hereditary stature”的论文~\cite{galton1886regression}中进行了一项研究。他收集了1078对夫妻及其儿子的身高数据，将父亲的身高作为解释变量，将儿子的身高作为被解释变量，进行统计分析。为了定量地描述父辈与子辈身高的关系，这篇论文总结出了一个公式：</p>
+            <p>$$y=0.516x+0.8567$$</p>
+            <p>其中，$y$表示子辈身高，$x$表示父辈身高，单位为米。</p>
+            <p>如<a href="#fig1.1a">图<span style="color:rgb(171, 33, 4);">1.2</span></a>所示，公式(1.1.4)有一个有趣的性质，当$x$大于1.77米时$y$会小于$x$，也就是子辈的身高会低于父辈；当$x$小于1.77米时$y$会大于$x$，也就是子辈的身高会高于父辈。而1.77米又差不多恰好是父辈的平均身高。换言之，无论父辈的身高是高于平均身高，还是低于平均身高，子辈的身高都会趋向于“向均值回归”。极端的情况下，如果父辈的远高于平均身高，那么子辈个子虽然也会高，但是很难比父辈更高。这种现象后来被证明在自然现象中是广泛存在的（与之相反的是“马太效应”，通常存在于社会现象中）。在2500年前，老子在《道德经》中说：“天之道，损有余而补不足。人之道则不然，损不足以奉有余。”就是对于“均值回归”和“马太效应”现象的哲学论述。</p>
+            <p style="text-align: center;"><img id="fig1.2" style="width: 45%; " src="figures/4-LinearModel/height_regression.pdf" alt="1.2"></p>
+            <p style="text-align: center;"><span class="define-text">图 1.2</span>: 图中横轴是父辈的身高，蓝色线标识出了对应父辈身高下子辈的身高。我们同时用红色线和灰色线标出父辈身高和平均身高作为参考。可以看出，当父辈身高低于平均时，子辈的身高会高于父辈，当父辈身高高于平均时，子辈会低于父辈。呈现向均值回归现象。</p>
+            <p>“均值回归”现象最早是通过建立变量$x$与变量$y$之间的关系模型的方式被发现的，后来人们就将“回归”这个名词保留了下来，特指这种使用解释变量预测被解释变量的建模方法。虽然其研究的问题已经不再局限于“向均值回归”现象。</p>
         </div>
         <div class="sidebar">
-            <h3>1.1 简介</h3>
-            <h3>1.2 什么是强化学习</h3>
-            <h3>1.3 强化学习的环境</h3>
-            <h3>1.4 强化学习的目标</h3>
-            <h3>1.5 强化学习中的数据</h3>
-            <h3>1.6 强化学习的独特性</h3>
-            <h3>1.7 小结</h3>
+            <a href="#part1"><p>知识点 1.1 什么是回归？</p></a>
+            <a href="#part2"><p>实例 1.1 某学校附近租房价格预测</p></a>
+            <a href="#part3"><p>延伸阅读 1.1 为什么一个预测模型会被称为回归？</p></a>
         </div>
     </div>
 </body>
